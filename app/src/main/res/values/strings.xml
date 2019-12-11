@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="btn_menu_skip">skip</string>
+    <string name="vp_text">NEXT</string>
+    <string name="vp_text_prev">PREV</string>
+    <string name="get_started">GET STARTED</string>
+</resources>
