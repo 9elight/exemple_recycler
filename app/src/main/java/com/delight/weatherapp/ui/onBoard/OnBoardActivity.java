@@ -19,11 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.delight.weatherapp.R;
+import com.delight.weatherapp.data.OnBoardData;
 import com.delight.weatherapp.data.PreferenceHelper;
 import com.delight.weatherapp.ui.main.MainActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.security.PrivateKey;
+import java.util.ArrayList;
 
 public class OnBoardActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -37,8 +39,6 @@ public class OnBoardActivity extends AppCompatActivity {
     private int mCurrentPage;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +48,16 @@ public class OnBoardActivity extends AppCompatActivity {
         addDotsIndicator(0);
         viewPager.addOnPageChangeListener(viewListener);
     }
-    public static void start(Context context){
-        context.startActivity(new Intent(context,OnBoardActivity.class));
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, OnBoardActivity.class));
     }
 
     //Dots Indicator
-    public void addDotsIndicator(int position){
+    public void addDotsIndicator(int position) {
         mDots = new TextView[4];
         mDotLayout.removeAllViews();
-        for (int i = 0; i < mDots.length; i++){
+        for (int i = 0; i < mDots.length; i++) {
             mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226;"));
             mDots[i].setTextSize(35);
@@ -65,7 +66,7 @@ public class OnBoardActivity extends AppCompatActivity {
             mDotLayout.addView(mDots[i]);
         }
 
-        if (mDots.length > 0){
+        if (mDots.length > 0) {
             mDots[position].setTextColor(getResources().getColor(R.color.colorBlue));
         }
     }
@@ -80,33 +81,24 @@ public class OnBoardActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             addDotsIndicator(position);
             mCurrentPage = position;
-
-            if (position == 0){
+            if (position == 0) {
                 nextButton.setEnabled(true);
                 prevButton.setEnabled(false);
                 prevButton.setVisibility(View.INVISIBLE);
                 nextButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.INVISIBLE);
-
-
-
-            }else if (position == mDots.length - 1){
+            } else if (position == mDots.length - 1) {
                 nextButton.setEnabled(true);
                 prevButton.setEnabled(true);
                 prevButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.VISIBLE);
                 nextButton.setVisibility(View.INVISIBLE);
-
-
-
-
-            }else {
+            } else {
                 nextButton.setEnabled(true);
                 prevButton.setEnabled(true);
                 prevButton.setVisibility(View.VISIBLE);
                 nextButton.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.INVISIBLE);
-
             }
         }
 
@@ -115,22 +107,41 @@ public class OnBoardActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.skip:
+                MainActivity.start(this);
+                finish();
+                break;
+        }
+        return true;
+    }
+
     //findViewById
-    private void initViews(){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_onboard, menu);
+        return true;
+    }
+
+    private void initViews() {
         viewPager = findViewById(R.id.viewPager);
-        myPagerAdapter = new MyPagerAdapter(this);
+        myPagerAdapter = new MyPagerAdapter(getList());
         viewPager.setAdapter(myPagerAdapter);
         toolbar = findViewById(R.id.appBar);
         mDotLayout = findViewById(R.id.dots_selector);
         nextButton = findViewById(R.id.viewPager_next_btn);
         prevButton = findViewById(R.id.viewPager_prev_button);
         startButton = findViewById(R.id.start_btn);
-
         setSupportActionBar(toolbar);
-
     }
+
     //setOnClick(this)
-    private void initListeners(){
+
+    private void initListeners() {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,24 +162,13 @@ public class OnBoardActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_onboard,menu);
-        return true;
+    private ArrayList<OnBoardData> getList(){
+        ArrayList<OnBoardData> list = new ArrayList<>();
+        list.add(new OnBoardData (getResources().getString(R.string.OB_firstPage),R.drawable.sun));
+        list.add(new OnBoardData (getResources().getString(R.string.OB_secondPage),R.drawable.rain));
+        list.add(new OnBoardData (getResources().getString(R.string.OB_thirdPage),R.drawable.snow));
+        list.add(new OnBoardData (getResources().getString(R.string.OB_FourthPage),R.drawable.storm));
+        return list;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.skip:
-                MainActivity.start(this);
-                finish();
-                break;
-        }
-        return true;
-    }
-
 
 }

@@ -4,4 +4,9 @@
     <string name="vp_text">NEXT</string>
     <string name="vp_text_prev">PREV</string>
     <string name="get_started">GET STARTED</string>
+    <string name="OB_firstPage">Sun</string>
+    <string name="OB_secondPage">Rain</string>
+    <string name="OB_thirdPage">Snow</string>
+    <string name="OB_FourthPage">Storm</string>
+
 </resources>

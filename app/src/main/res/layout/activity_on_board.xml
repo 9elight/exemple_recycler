@@ -32,7 +32,7 @@
         android:id="@+id/viewPager_next_btn"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/appBar"
         android:layout_alignParentRight="true"
         android:visibility="visible"
         android:background="@android:color/transparent"
@@ -54,7 +54,7 @@
         android:id="@+id/viewPager_prev_button"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/appBar"
         android:layout_alignParentLeft="true"
         android:background="@android:color/transparent"
         android:visibility="invisible"/>

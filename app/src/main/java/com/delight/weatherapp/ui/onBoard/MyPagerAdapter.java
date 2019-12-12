@@ -13,20 +13,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.delight.weatherapp.R;
+import com.delight.weatherapp.data.OnBoardData;
+
+import java.util.ArrayList;
 
 
 public class MyPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
-    private Context context;
-    private LayoutInflater inflater;
-    private int[] img = {R.drawable.sun,R.drawable.rain,R.drawable.snow,R.drawable.storm};
-    private String[] text = {"SUN","RAIN","SNOW","STORM"};
 
-    public MyPagerAdapter(Context context){
-        this.context = context;
+    private LayoutInflater inflater;
+    private ArrayList<OnBoardData> data;
+
+    public MyPagerAdapter(ArrayList<OnBoardData> data){
+        this.data = data;
     }
     @Override
     public int getCount() {
-        return img.length;
+        return data.size();
     }
 
     @Override
@@ -37,24 +39,20 @@ public class MyPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        inflater = LayoutInflater.from(container.getContext());
         View view = inflater.inflate(R.layout.view_pager_layout,container,false);
         ImageView imageView =  view.findViewById(R.id.viewPager_img);
         TextView textView = view.findViewById(R.id.viewPager_text);
 
-        imageView.setImageResource(img[position]);
-        textView.setText(text[position]);
+        imageView.setImageResource(data.get(position).getImage());
+        textView.setText(data.get(position).getTitle());
         container.addView(view);
         return view;
-
-
-
     }
 
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout)object);
-
     }
 }
