@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ic_place_dimens">24dp</dimen>
+    <dimen name="ic_place_left_dimens">22dp</dimen>
+    <dimen name="text_place_margin">8dp</dimen>
+    <dimen name="vertical_big_margin">20dp</dimen>
+    <dimen name="vertical_middle_margin">12dp</dimen>
+    <dimen name="vertical_small_margin">8dp</dimen>
+    <dimen name="horizontal_big_margin">62dp</dimen>
+</resources>

@@ -8,5 +8,34 @@
     <string name="OB_secondPage">Rain</string>
     <string name="OB_thirdPage">Snow</string>
     <string name="OB_FourthPage">Storm</string>
+    <string name="default_place_text">California, US</string>
+    <string name="text_now">Now</string>
+    <string name="text_today">Today</string>
+    <string name="text_def_temp">21°</string>
+    <string name="text_def_maxTemp">28°</string>
+    <string name="text_def_minTemp">18°</string>
+    <string name="little_rain">little rain</string>
+    <string name="max">Max</string>
+    <string name="pressure">Pressure</string>
+    <string name="text_wind_condition">SW 4m/s</string>
+    <string name="text_pressure_condition">1010mb</string>
+    <string name="humidity">Humidity</string>
+    <string name="cloudiness">Cloudiness</string>
+    <string name="text_humidity_condition">81%</string>
+    <string name="text_cloudiness_condition">100%</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="text_sunrise_time">06:00</string>
+    <string name="text_sunset_time">20:31</string>
+    <string name="air_quality_index">Air Quality Index</string>
+    <string name="air_quality">Air Quality</string>
+    <string name="AQI">30</string>
+    <string name="airQuality">Good</string>
+    <string name="wind">Wind</string>
+    <string name="text_month">December</string>
+    <string name="text_year">2019</string>
+    <string name="day">14</string>
+    <string name="weatherKey">4d63c1acf9a085448b23971128e5eddd</string>
+
 
 </resources>
