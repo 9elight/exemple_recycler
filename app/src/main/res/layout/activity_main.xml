@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/gray_bg"
         android:layout_width="match_parent"
-        android:layout_height="122dp"
+        android:layout_height="@dimen/grayBG_height"
         android:background="@android:color/darker_gray"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -18,24 +18,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/day"
-        android:textSize="40sp"
+        android:textSize="@dimen/textSize_date"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textColor="@android:color/black"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="44dp"/>
-        <TextView
-            android:id="@+id/month"
-            style="@style/textView_dateStyle"
-            app:layout_constraintLeft_toRightOf="@id/day"
-            app:layout_constraintTop_toTopOf="@id/day"
-            android:text="@string/text_month"/>
-        <TextView
-            android:id="@+id/year"
-            style="@style/textView_dateStyle"
-            app:layout_constraintLeft_toRightOf="@id/day"
-            app:layout_constraintBottom_toBottomOf="@id/day"
-            android:text="@string/text_year"/>
+        android:layout_marginStart="@dimen/date_marginStart"
+        android:layout_marginTop="@dimen/date_marginTop"/>
+<!--        <TextView-->
+<!--            android:id="@+id/month"-->
+<!--            style="@style/textView_dateStyle"-->
+<!--            app:layout_constraintLeft_toRightOf="@id/day"-->
+<!--            app:layout_constraintTop_toTopOf="@id/day"-->
+<!--            android:text="@string/text_month"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/year"-->
+<!--            style="@style/textView_dateStyle"-->
+<!--            app:layout_constraintLeft_toRightOf="@id/day"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/day"-->
+<!--            android:text="@string/text_year"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,9 +60,9 @@
 
     <ImageView
         android:id="@+id/ic_weather"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="@dimen/img_width"
+        android:layout_height="@dimen/img_height"
+        android:layout_marginTop="@dimen/img_MarginTop"
         android:src="@drawable/ic_cloudy_rain"
         app:layout_constraintLeft_toLeftOf="@id/ic_place"
 

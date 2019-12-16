@@ -7,4 +7,11 @@
     <dimen name="vertical_middle_margin">12dp</dimen>
     <dimen name="vertical_small_margin">8dp</dimen>
     <dimen name="horizontal_big_margin">62dp</dimen>
+    <dimen name="textSize_date">40sp</dimen>
+    <dimen name="date_marginStart">20dp</dimen>
+    <dimen name="date_marginTop">44dp</dimen>
+    <dimen name="img_width">56dp</dimen>
+    <dimen name="img_height">56dp</dimen>
+    <dimen name="img_MarginTop">20dp</dimen>
+    <dimen name="grayBG_height">122dp</dimen>
 </resources>

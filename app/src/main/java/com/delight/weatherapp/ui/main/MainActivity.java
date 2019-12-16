@@ -51,19 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
                         if (response.isSuccessful() && response.body() != null){
-                            Toast.makeText(getApplicationContext(),response.body().getWeather().get(0).getIcon(),Toast.LENGTH_LONG).show();
-                            city.setText(response.body().getName());
-                            temp.setText(response.body().getMain().getTemp().toString());
-                            maxTemp.setText(response.body().getMain().getTempMax().toString());
-                            minTemp.setText(response.body().getMain().getTempMin().toString());
-                            windSpeed.setText(response.body().getWind().getSpeed().toString());
-                            pressure.setText(response.body().getMain().getPressure().toString());
-                            humidity.setText(response.body().getMain().getHumidity().toString());
-                            cloudiness.setText(response.body().getClouds().getAll().toString());
-                            Glide.with(getApplicationContext())
-                                    .load("http://openweathermap.org/img/wn/"
-                                            + response.body().getWeather().get(0).getIcon()
-                                            + "@2x.png").into(weatherImg);
+                            setWeather(response);
                         }
                     }
 
@@ -87,10 +75,26 @@ public class MainActivity extends AppCompatActivity {
         sunrise = findViewById(R.id.text_sunrise_condition);
         sunset = findViewById(R.id.text_sunset_condition);
         day = findViewById(R.id.day);
-        month = findViewById(R.id.month);
-        year = findViewById(R.id.year);
+
 
     }
 
+    private void setWeather(Response<CurrentWeather> response){
+        city.setText(response.body().getName());
+        temp.setText(response.body().getMain().getTemp().toString());
+        maxTemp.setText(response.body().getMain().getTempMax().toString());
+        minTemp.setText(response.body().getMain().getTempMin().toString());
+        windSpeed.setText(response.body().getWind().getSpeed().toString());
+        pressure.setText(response.body().getMain().getPressure().toString());
+        humidity.setText(response.body().getMain().getHumidity().toString());
+        cloudiness.setText(response.body().getClouds().getAll().toString());
+        sunrise.setText(response.body().getSys().getSunrise().toString());
+        sunset.setText(response.body().getSys().getSunset().toString());
+        Glide.with(getApplicationContext())
+                .load("http://openweathermap.org/img/wn/"
+                        + response.body().getWeather().get(0).getIcon()
+                        + "@2x.png").into(weatherImg);
+        day.setText(new SimpleDateFormat("dd MMMM yyyy").format(new Date()));
 
+    }
 }
