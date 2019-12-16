@@ -21,6 +21,7 @@ import com.delight.weatherapp.ui.onBoard.OnBoardActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,7 +29,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private TextView city, temp , maxTemp, minTemp,windSpeed,pressure
-            ,humidity,cloudiness,sunrise,sunset,day,month,year;
+            ,humidity,cloudiness,sunrise,sunset,day,weatherCondition;
     private ImageView weatherImg;
 
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         sunrise = findViewById(R.id.text_sunrise_condition);
         sunset = findViewById(R.id.text_sunset_condition);
         day = findViewById(R.id.day);
+        weatherCondition = findViewById(R.id.text_weather_condition);
 
 
     }
@@ -88,13 +90,20 @@ public class MainActivity extends AppCompatActivity {
         pressure.setText(response.body().getMain().getPressure().toString());
         humidity.setText(response.body().getMain().getHumidity().toString());
         cloudiness.setText(response.body().getClouds().getAll().toString());
-        sunrise.setText(response.body().getSys().getSunrise().toString());
-        sunset.setText(response.body().getSys().getSunset().toString());
+        sunrise.setText(parseDateToTime(response.body().getSys().getSunrise()));
+        sunset.setText(parseDateToTime(response.body().getSys().getSunset()));
+        weatherCondition.setText(response.body().getWeather().get(0).getDescription());
         Glide.with(getApplicationContext())
                 .load("http://openweathermap.org/img/wn/"
                         + response.body().getWeather().get(0).getIcon()
                         + "@2x.png").into(weatherImg);
         day.setText(new SimpleDateFormat("dd MMMM yyyy").format(new Date()));
 
+    }
+    private String parseDateToTime(double d){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        Date date = new Date();
+        date.setTime((long) d * 1000);
+        return dateFormat.format(date.getTime());
     }
 }
