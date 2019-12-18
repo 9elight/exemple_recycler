@@ -44,6 +44,8 @@ public class CurrentWeather {
     @SerializedName("cod")
     @Expose
     private Integer cod;
+    @SerializedName("dt_txt")
+    private String dateTimeForCast;
 
     public Coord getCoord() {
         return coord;
@@ -141,4 +143,11 @@ public class CurrentWeather {
         this.cod = cod;
     }
 
+    public String getDateTimeForCast() {
+        return dateTimeForCast;
+    }
+
+    public void setDateTimeForCast(String dateTimeForCast) {
+        this.dateTimeForCast = dateTimeForCast;
+    }
 }

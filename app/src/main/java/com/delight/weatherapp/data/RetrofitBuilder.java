@@ -3,7 +3,9 @@ package com.delight.weatherapp.data;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrifitBuilder {
+import static com.delight.weatherapp.BuildConfig.BASE_URL;
+
+public class RetrofitBuilder {
 
 private static WeatherService weatherService;
 
@@ -16,7 +18,7 @@ public static WeatherService getService(){
 
 private static WeatherService buildRetrofit(){
     return new Retrofit.Builder()
-            .baseUrl("http://api.openweathermap.org/data/2.5/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(WeatherService.class);
 }

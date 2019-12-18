@@ -14,29 +14,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/day"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/day"
         android:textSize="@dimen/textSize_date"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textColor="@android:color/black"
         android:layout_marginStart="@dimen/date_marginStart"
         android:layout_marginTop="@dimen/date_marginTop"/>
-<!--        <TextView-->
-<!--            android:id="@+id/month"-->
-<!--            style="@style/textView_dateStyle"-->
-<!--            app:layout_constraintLeft_toRightOf="@id/day"-->
-<!--            app:layout_constraintTop_toTopOf="@id/day"-->
-<!--            android:text="@string/text_month"/>-->
-<!--        <TextView-->
-<!--            android:id="@+id/year"-->
-<!--            style="@style/textView_dateStyle"-->
-<!--            app:layout_constraintLeft_toRightOf="@id/day"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/day"-->
-<!--            android:text="@string/text_year"/>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -45,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/ic_place_left_dimens"
-        android:layout_marginTop="@dimen/ic_place_dimens"
+        android:layout_marginTop="@dimen/vertical_small_margin"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gray_bg"
         app:srcCompat="@drawable/ic_place" />
@@ -62,10 +50,9 @@
         android:id="@+id/ic_weather"
         android:layout_width="@dimen/img_width"
         android:layout_height="@dimen/img_height"
-        android:layout_marginTop="@dimen/img_MarginTop"
+        android:layout_marginTop="@dimen/vertical_small_margin"
         android:src="@drawable/ic_cloudy_rain"
         app:layout_constraintLeft_toLeftOf="@id/ic_place"
-
         app:layout_constraintTop_toBottomOf="@id/ic_place" />
 
     <TextView
@@ -114,6 +101,11 @@
         android:text="@string/little_rain"
         app:layout_constraintLeft_toLeftOf="@id/temp"
         app:layout_constraintTop_toBottomOf="@id/temp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/text_weather_condition"/>
     <TextView
         style="@style/textView_smallStyle"
         android:text="@string/max"
@@ -129,14 +121,14 @@
         style="@style/textView_normalStyle"
         android:text="@string/wind"
         app:layout_constraintLeft_toLeftOf="@id/temp"
-        app:layout_constraintTop_toBottomOf="@id/text_weather_condition"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
         android:layout_marginTop="@dimen/vertical_big_margin"/>
     <TextView
         android:id="@+id/Pressure"
         style="@style/textView_normalStyle"
         android:text="@string/pressure"
         app:layout_constraintLeft_toRightOf="@id/temp_min"
-        app:layout_constraintTop_toBottomOf="@id/text_weather_condition"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView"
         android:layout_marginTop="@dimen/vertical_big_margin"/>
     <TextView
         android:id="@+id/text_wind_condition"
@@ -195,14 +187,14 @@
         app:layout_constraintLeft_toLeftOf="@id/text_cloudiness_condition"
         android:layout_marginTop="@dimen/vertical_small_margin"/>
     <TextView
-        android:id="@+id/text_sunrise_condition"
+        android:id="@+id/text_sunrise_time"
         style="@style/textView_BigStyle"
         android:text="@string/text_sunrise_time"
         android:layout_marginTop="@dimen/vertical_small_margin"
         app:layout_constraintTop_toBottomOf="@id/Sunrise"
         app:layout_constraintLeft_toLeftOf="@id/Sunrise"/>
     <TextView
-        android:id="@+id/text_sunset_condition"
+        android:id="@+id/text_sunset_time"
         android:text="@string/text_sunset_time"
         style="@style/textView_BigStyle"
         android:layout_marginTop="@dimen/vertical_small_margin"
@@ -212,35 +204,15 @@
         android:id="@+id/AirQualityIndex"
         style="@style/textView_normalStyle"
         android:text="@string/air_quality_index"
-        app:layout_constraintTop_toBottomOf="@+id/text_sunrise_condition"
-        app:layout_constraintLeft_toLeftOf="@id/text_sunrise_condition"
+        app:layout_constraintTop_toBottomOf="@+id/text_sunrise_time"
+        app:layout_constraintLeft_toLeftOf="@id/text_sunrise_time"
         android:layout_marginTop="@dimen/vertical_small_margin"/>
     <TextView
         android:id="@+id/AirQuality"
         style="@style/textView_normalStyle"
         android:text="@string/air_quality"
-        app:layout_constraintTop_toBottomOf="@+id/text_sunset_condition"
-        app:layout_constraintLeft_toLeftOf="@id/text_sunset_condition"
+        app:layout_constraintTop_toBottomOf="@+id/text_sunset_time"
+        app:layout_constraintLeft_toLeftOf="@id/text_sunset_time"
         android:layout_marginTop="@dimen/vertical_small_margin"/>
-    <TextView
-        android:id="@+id/text_air_index"
-        style="@style/textView_BigStyle"
-        android:text="@string/AQI"
-        android:layout_marginTop="@dimen/vertical_small_margin"
-        app:layout_constraintTop_toBottomOf="@id/AirQualityIndex"
-        app:layout_constraintLeft_toLeftOf="@id/AirQualityIndex"/>
-    <TextView
-        android:id="@+id/text_air_quality"
-        style="@style/textView_BigStyle"
-        android:text="@string/airQuality"
-        android:layout_marginTop="@dimen/vertical_small_margin"
-        app:layout_constraintTop_toBottomOf="@id/AirQuality"
-        app:layout_constraintLeft_toLeftOf="@id/AirQuality"/>
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

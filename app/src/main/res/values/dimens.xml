@@ -13,5 +13,5 @@
     <dimen name="img_width">56dp</dimen>
     <dimen name="img_height">56dp</dimen>
     <dimen name="img_MarginTop">20dp</dimen>
-    <dimen name="grayBG_height">122dp</dimen>
+    <dimen name="grayBG_height">104dp</dimen>
 </resources>
