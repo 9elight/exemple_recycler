@@ -13,7 +13,7 @@ import com.delight.weatherapp.R;
 
 import java.text.ParseException;
 
-import static com.delight.weatherapp.utils.DateParser.forcastDate;
+import static com.delight.weatherapp.utils.DateParser.forCastDate;
 
 public class RV_view_holder extends RecyclerView.ViewHolder {
     private TextView date,maxTemperature,minTemperature;
@@ -27,9 +27,8 @@ public class RV_view_holder extends RecyclerView.ViewHolder {
 
     }
     public void onBind(String date,String maxTemp,String minTemp,String img,int position){
-
         try {
-            this.date.setText(forcastDate(date));
+            this.date.setText(forCastDate(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }

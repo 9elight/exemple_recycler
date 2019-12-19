@@ -10,21 +10,31 @@
         android:id="@+id/gray_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/grayBG_height"
-        android:background="@android:color/darker_gray"
+        android:background="@color/colorBlue"
         app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/day"
         android:text="@string/day"
         android:textSize="@dimen/textSize_date"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        style="@style/textView_dateStyle"
+        android:layout_marginTop="@dimen/vertical_big_margin"
+        android:layout_marginLeft="@dimen/vertical_big_margin"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:textColor="@android:color/black"
-        android:layout_marginStart="@dimen/date_marginStart"
-        android:layout_marginTop="@dimen/date_marginTop"/>
+        app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/month"
+            android:text="@string/text_month"
+            style="@style/textView_dateStyle"
+            app:layout_constraintTop_toTopOf="@id/day"
+            app:layout_constraintLeft_toRightOf="@id/day"/>
+        <TextView
+            android:id="@+id/year"
+            android:text="@string/text_year"
+            style="@style/textView_dateStyle"
+            app:layout_constraintBottom_toBottomOf="@id/day"
+            app:layout_constraintLeft_toRightOf="@id/day"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

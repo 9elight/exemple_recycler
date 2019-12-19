@@ -40,7 +40,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.text_cloudiness_condition) TextView cloudiness;
     @BindView(R.id.text_sunrise_time) TextView sunrise;
     @BindView(R.id.text_sunset_time) TextView sunset;
-    @BindView(R.id.date) TextView date;
+    @BindView(R.id.day) TextView day;
+    @BindView(R.id.month) TextView month;
+    @BindView(R.id.year) TextView year;
     @BindView(R.id.text_weather_condition) TextView weatherCondition;
     @BindView(R.id.ic_weather) ImageView weatherImg;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -111,20 +113,18 @@ public class MainActivity extends BaseActivity {
         sunrise.setText(parseDateToTime(weather.getSys().getSunrise()));
         sunset.setText(parseDateToTime(weather.getSys().getSunset()));
         weatherCondition.setText(weather.getWeather().get(0).getDescription());
-        date.setText(new SimpleDateFormat("dd MMMM yyyy").format(new Date()));
+        day.setText(new SimpleDateFormat("dd").format(new Date()));
+        month.setText(new SimpleDateFormat("MMMM").format(new Date()));
+        year.setText(new SimpleDateFormat("yyyy").format(new Date()));
         Glide.with(getApplicationContext())
                 .load("http://openweathermap.org/img/wn/"
                         + weather.getWeather().get(0).getIcon()
                         + "@2x.png").into(weatherImg);
-
     }
-
     private void rv_builder(List<CurrentWeather> list){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new RV_Adapter(list));
-
-
     }
 
 }

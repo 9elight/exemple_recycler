@@ -12,11 +12,11 @@ public class DateParser {
         date.setTime((long) d * 1000);
         return dateFormat.format(date.getTime());
     }
-    public static String forcastDate(String s) throws ParseException {
+    public static String forCastDate(String s) throws ParseException {
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = dt.parse(s);
 
-        SimpleDateFormat outDt = new SimpleDateFormat("dd.MM");
+        SimpleDateFormat outDt = new SimpleDateFormat("dd.MMM");
         String parseDate = outDt.format(date);
         return parseDate;
     }
