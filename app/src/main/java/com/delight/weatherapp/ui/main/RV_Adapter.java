@@ -17,9 +17,13 @@ import java.util.List;
 public class RV_Adapter extends RecyclerView.Adapter<RV_view_holder> {
     private List<CurrentWeather> list;
 
-    public RV_Adapter(List<CurrentWeather> list) {
-        this.list = list;
+    public RV_Adapter() {
 
+
+    }
+
+    void updateWeather(List<CurrentWeather> list){
+        this.list = list;
     }
 
     @NonNull

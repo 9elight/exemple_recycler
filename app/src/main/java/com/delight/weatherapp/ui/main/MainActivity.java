@@ -3,10 +3,13 @@ package com.delight.weatherapp.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +19,7 @@ import com.delight.weatherapp.base.BaseActivity;
 import com.delight.weatherapp.data.RetrofitBuilder;
 import com.delight.weatherapp.data.entity.CurrentWeather;
 import com.delight.weatherapp.data.entity.ForCastEntity;
+import com.delight.weatherapp.ui.map.MapActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +50,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.text_weather_condition) TextView weatherCondition;
     @BindView(R.id.ic_weather) ImageView weatherImg;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.ic_place) ImageView ic_map;
 
 
 
@@ -124,7 +129,21 @@ public class MainActivity extends BaseActivity {
     private void rv_builder(List<CurrentWeather> list){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new RV_Adapter(list));
+        RV_Adapter adapter = new RV_Adapter();
+        recyclerView.setAdapter(adapter);
+        adapter.updateWeather(list);
     }
 
+
+    public void openMap(View view) {
+        startActivityForResult(new Intent(this, MapActivity.class),100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 100 && data != null){
+            Log.e("cord", "onActivityResult: " + data.getDoubleExtra("Lat",0) );
+        }
+    }
 }

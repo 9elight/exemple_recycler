@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/ic_place_left_dimens"
         android:layout_marginTop="@dimen/vertical_small_margin"
+        android:onClick="openMap"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gray_bg"
         app:srcCompat="@drawable/ic_place" />

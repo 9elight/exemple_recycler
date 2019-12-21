@@ -13,6 +13,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "BASE_URL", "\"${base_url}\""
         buildConfigField "String", "API_KEY", "\"${api_key}\""
+        buildConfigField "String", "MAP_KEY", "\"${map_key}\""
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -34,6 +35,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.5.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-markerview-v8:0.3.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
