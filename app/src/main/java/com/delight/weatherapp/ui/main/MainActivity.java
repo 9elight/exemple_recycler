@@ -52,6 +52,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.ic_place) ImageView ic_map;
 
+    private double lat;
+    private double lng;
+
 
 
     @Override
@@ -65,6 +68,7 @@ public class MainActivity extends BaseActivity {
 
         getWeather();
         getWeatherForCast();
+
     }
 
     public static void start(Context context){
@@ -143,7 +147,39 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 100 && data != null){
-            Log.e("cord", "onActivityResult: " + data.getDoubleExtra("Lat",0) );
+            lat = data.getDoubleExtra("lat",0);
+            lng = data.getDoubleExtra("lng",0);
+            getWeatherForCoord(lat,lng);
+            getForeCastWeatherForCoord(lat,lng);
         }
+    }
+
+    private void getWeatherForCoord(double lat,double lon){
+        RetrofitBuilder.getService().coordCurrentWeather(lat,lon,"metric",API_KEY)
+                .enqueue(new Callback<CurrentWeather>() {
+            @Override
+            public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
+                setWeather(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<CurrentWeather> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void getForeCastWeatherForCoord(double lat,double lon){
+        RetrofitBuilder.getService().coordForCastWeather(lat,lon,"metric",API_KEY)
+                .enqueue(new Callback<ForCastEntity>() {
+                    @Override
+                    public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
+                        rv_builder(response.body().getList());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ForCastEntity> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

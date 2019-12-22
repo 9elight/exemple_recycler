@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.delight.weatherapp.R;
 import com.delight.weatherapp.base.BaseMapActivity;
@@ -25,20 +26,28 @@ public class MapActivity extends BaseMapActivity  {
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         super.onMapReady(mapboxMap);
-        mapboxMap.addOnMapLongClickListener(point -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-            builder.setTitle("Внимание!!!");
-            builder.setMessage("Вы выбрали координаты");
-            builder.setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
-            builder.setPositiveButton("Да", (dialog, which) -> {
-                Intent intent = new Intent();
-                intent.putExtra("Lat",point.getLatitude());
-                intent.putExtra("Lng",point.getLongitude());
-                setResult(RESULT_OK);
-                finish();
-            });
+        mapboxMap.addOnMapClickListener(point -> {
+
+            Toast.makeText(MapActivity.this, String.format("User clicked at: %s", point.toString()), Toast.LENGTH_LONG).show();
+
             return true;
         });
+        mapboxMap.addOnMapLongClickListener(point -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+            builder.setTitle("Внимание!!!").setMessage("Вы выбрали окончательный координаты?")
+                    .setPositiveButton("Да", (dialog, which) -> {
+                        Intent intent = new Intent();
+                        intent.putExtra("lat",point.getLatitude());
+                        intent.putExtra("lng",point.getLongitude());
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+                    }).setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            return true;
+        });
+
 
     }
 

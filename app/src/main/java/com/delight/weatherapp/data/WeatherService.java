@@ -20,4 +20,16 @@ public interface WeatherService {
     Call<ForCastEntity> forCastWeather(@Query("q") String city,
                                        @Query("units") String format,
                                        @Query("appid") String key);
+
+    @GET(CURRENT_WEATHER)
+    Call<CurrentWeather> coordCurrentWeather(@Query("lat") double lat,
+                                             @Query("lon") double lon,
+                                             @Query("units") String format,
+                                             @Query("appid") String key);
+    @GET(FORECAST_WEATHER)
+    Call<ForCastEntity> coordForCastWeather(@Query("lat") double lat,
+                                            @Query("lon") double lon,
+                                       @Query("units") String format,
+                                       @Query("appid") String key);
+
 }

@@ -1,11 +1,14 @@
 package com.delight.weatherapp.base;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.delight.weatherapp.R;
+import com.delight.weatherapp.ui.main.MainActivity;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -32,6 +35,7 @@ public abstract class BaseMapActivity extends BaseActivity implements OnMapReady
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         mapboxMap.setStyle(Style.SATELLITE_STREETS, style -> map = mapboxMap);
+
 
     }
 
