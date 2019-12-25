@@ -36,6 +36,7 @@
     <string name="text_year">2019</string>
     <string name="day">14</string>
     <string name="weatherKey">4d63c1acf9a085448b23971128e5eddd</string>
+    <string name="min">Min</string>
 
 
 </resources>

@@ -7,20 +7,39 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
+import com.delight.weatherapp.ForeGroundService;
 import com.delight.weatherapp.R;
 import com.delight.weatherapp.base.BaseMapActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
-public class MapActivity extends BaseMapActivity  {
+import butterknife.BindView;
 
+public class MapActivity extends BaseMapActivity  {
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    private boolean flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fab.setOnClickListener(v -> {
+            if (flag == false){
+                flag = true;
+                Intent intent = new Intent(this, ForeGroundService.class);
+                startService(intent);
+                fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+            }else{
+                Intent intent = new Intent(this, ForeGroundService.class);
+                stopService(intent);
+                fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
+                flag = false;
+            }
+        });
     }
 
     @Override
@@ -48,6 +67,10 @@ public class MapActivity extends BaseMapActivity  {
             return true;
         });
 
+
+    }
+
+    private void coordService(){
 
     }
 

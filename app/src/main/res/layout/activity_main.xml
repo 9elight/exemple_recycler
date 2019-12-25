@@ -124,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@id/temp_max"/>
     <TextView
         style="@style/textView_smallStyle"
-        android:text="@string/max"
+        android:text="@string/min"
         app:layout_constraintLeft_toLeftOf="@id/temp_min"
         app:layout_constraintTop_toBottomOf="@id/temp_min"/>
     <TextView
