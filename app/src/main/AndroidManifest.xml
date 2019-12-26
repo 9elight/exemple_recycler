@@ -21,7 +21,7 @@
         <activity android:name=".ui.map.MapActivity"></activity>
         <activity
             android:name=".ui.onBoard.OnBoardActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -35,16 +35,18 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:launchMode="singleTop">
+
+        </activity>
         <service
-            android:name=".data.FirebaseService"
+            android:name=".data.service.FirebaseService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".ForeGroundService"/>
+        <service android:name=".data.service.ForegroundService"/>
     </application>
 
 </manifest>

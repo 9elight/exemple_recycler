@@ -1,43 +1,58 @@
 package com.delight.weatherapp.ui.map;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+
+
+import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.view.View;
+
+
 import android.widget.Toast;
 
-import com.delight.weatherapp.ForeGroundService;
 import com.delight.weatherapp.R;
 import com.delight.weatherapp.base.BaseMapActivity;
+
+import com.delight.weatherapp.data.service.ForegroundService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
-public class MapActivity extends BaseMapActivity  {
+
+public class MapActivity extends BaseMapActivity {
+
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    private boolean flag = false;
+    private boolean isClicked = false;
+    private boolean permissionStatus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        callPermissions();
         fab.setOnClickListener(v -> {
-            if (flag == false){
-                flag = true;
-                Intent intent = new Intent(this, ForeGroundService.class);
+            if (isClicked == false) {
+                isClicked = true;
+                Intent intent = new Intent(this, ForegroundService.class);
+                intent.putExtra("true", permissionStatus);
                 startService(intent);
+
                 fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
-            }else{
-                Intent intent = new Intent(this, ForeGroundService.class);
+            } else {
+                Intent intent = new Intent(this, ForegroundService.class);
                 stopService(intent);
                 fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_play));
-                flag = false;
+                isClicked = false;
             }
         });
     }
@@ -56,9 +71,9 @@ public class MapActivity extends BaseMapActivity  {
             builder.setTitle("Внимание!!!").setMessage("Вы выбрали окончательный координаты?")
                     .setPositiveButton("Да", (dialog, which) -> {
                         Intent intent = new Intent();
-                        intent.putExtra("lat",point.getLatitude());
-                        intent.putExtra("lng",point.getLongitude());
-                        setResult(RESULT_OK,intent);
+                        intent.putExtra("lat", point.getLatitude());
+                        intent.putExtra("lng", point.getLongitude());
+                        setResult(RESULT_OK, intent);
                         finish();
 
                     }).setNegativeButton("Нет", (dialog, which) -> dialog.cancel());
@@ -69,9 +84,24 @@ public class MapActivity extends BaseMapActivity  {
 
 
     }
+    public void callPermissions(){
+        Permissions.check(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION}, "Нужен доступ к местоположению",
+                new Permissions.Options().setSettingsDialogTitle("Внимание!!!").setRationaleDialogTitle("Доступ к местоположению"),
+                new PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        permissionStatus = true;
+                    }
 
-    private void coordService(){
-
+                    @Override
+                    public void onDenied(Context context, ArrayList<String> deniedPermissions) {
+                        super.onDenied(context, deniedPermissions);
+                        callPermissions();
+                    }
+                });
     }
 
+
 }
+

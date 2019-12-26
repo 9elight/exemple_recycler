@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "805292021676",
+    "firebase_url": "https://weatherapp-9c1e5.firebaseio.com",
+    "project_id": "weatherapp-9c1e5",
+    "storage_bucket": "weatherapp-9c1e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805292021676:android:257184f1bbe9d138ce0c09",
+        "android_client_info": {
+          "package_name": "com.delight.weatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805292021676-cj87harp5tm2c0nerh8he6ibl2b0cm30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.delight.weatherapp",
+            "certificate_hash": "9cdab5df8188201d224abc49ae0874019e261452"
+          }
+        },
+        {
+          "client_id": "805292021676-f3fpaea0au3ed1s4u8r3537f3qshgosj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0dYf7qo5ItXRZZPUbTSEXm9PLttMWfFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805292021676-f3fpaea0au3ed1s4u8r3537f3qshgosj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
