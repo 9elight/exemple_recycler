@@ -102,42 +102,6 @@ public class MainActivity extends BaseActivity {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-    private void getWeather() {
-        RetrofitBuilder.getService()
-                .currentWeather("Bishkek", "metric", API_KEY)
-                .enqueue(new Callback<CurrentWeather>() {
-                    @Override
-                    public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            setWeather(response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<CurrentWeather> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-    private void getWeatherForCast() {
-        RetrofitBuilder.getService()
-                .forCastWeather("Bishkek", "metric", API_KEY)
-                .enqueue(new Callback<ForCastEntity>() {
-                    @Override
-                    public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            rv_builder(response.body().getList());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ForCastEntity> call, Throwable t) {
-
-                    }
-                });
-    }
-
     private void setWeather(CurrentWeather weather) {
         city.setText(weather.getName());
         temp.setText(weather.getMain().getTemp().toString());
@@ -183,6 +147,42 @@ public class MainActivity extends BaseActivity {
             getForeCastWeatherForCoord(lat, lng);
         }
     }
+
+//    private void getWeather() {
+//        RetrofitBuilder.getService()
+//                .currentWeather("Bishkek", "metric", API_KEY)
+//                .enqueue(new Callback<CurrentWeather>() {
+//                    @Override
+//                    public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
+//                        if (response.isSuccessful() && response.body() != null) {
+//                            setWeather(response.body());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<CurrentWeather> call, Throwable t) {
+//                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//    }
+
+//    private void getWeatherForCast() {
+//        RetrofitBuilder.getService()
+//                .forCastWeather("Bishkek", "metric", API_KEY)
+//                .enqueue(new Callback<ForCastEntity>() {
+//                    @Override
+//                    public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
+//                        if (response.isSuccessful() && response.body() != null) {
+//                            rv_builder(response.body().getList());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ForCastEntity> call, Throwable t) {
+//
+//                    }
+//                });
+//    }
 
     private void getWeatherForCoord(double lat, double lon) {
         RetrofitBuilder.getService().coordCurrentWeather(lat, lon, "metric", API_KEY)

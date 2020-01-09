@@ -15,10 +15,16 @@ public class PreferenceHelper {
     public static void init(Context context){
         preferences = context.getSharedPreferences(NAME_PREFS, MODE_PRIVATE);
     }
+
+    public static SharedPreferences getPreferences(){
+        return preferences;
+    }
     public static void setIsFirsLaunch(){
         preferences.edit().putBoolean(IS_FIRST_LAUNCH, true).apply();
     }
     public static boolean getIsFirsLaunch(){
         return preferences.getBoolean(IS_FIRST_LAUNCH, false);
     }
+
+
 }
