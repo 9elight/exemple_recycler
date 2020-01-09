@@ -1,5 +1,6 @@
 package com.delight.weatherapp.ui.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +23,15 @@ import com.delight.weatherapp.data.RetrofitBuilder;
 import com.delight.weatherapp.data.entity.CurrentWeather;
 import com.delight.weatherapp.data.entity.ForCastEntity;
 import com.delight.weatherapp.ui.map.MapActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,27 +44,43 @@ import static com.delight.weatherapp.BuildConfig.API_KEY;
 import static com.delight.weatherapp.utils.DateParser.parseDateToTime;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.text_place) TextView city;
-    @BindView(R.id.temp) TextView temp;
-    @BindView(R.id.temp_max) TextView maxTemp;
-    @BindView(R.id.temp_min) TextView minTemp;
-    @BindView(R.id.text_wind_condition) TextView windSpeed;
-    @BindView(R.id.text_pressure_condition) TextView pressure;
-    @BindView(R.id.text_humidity_condition) TextView humidity;
-    @BindView(R.id.text_cloudiness_condition) TextView cloudiness;
-    @BindView(R.id.text_sunrise_time) TextView sunrise;
-    @BindView(R.id.text_sunset_time) TextView sunset;
-    @BindView(R.id.day) TextView day;
-    @BindView(R.id.month) TextView month;
-    @BindView(R.id.year) TextView year;
-    @BindView(R.id.text_weather_condition) TextView weatherCondition;
-    @BindView(R.id.ic_weather) ImageView weatherImg;
-    @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.ic_place) ImageView ic_map;
+    @BindView(R.id.text_place)
+    TextView city;
+    @BindView(R.id.temp)
+    TextView temp;
+    @BindView(R.id.temp_max)
+    TextView maxTemp;
+    @BindView(R.id.temp_min)
+    TextView minTemp;
+    @BindView(R.id.text_wind_condition)
+    TextView windSpeed;
+    @BindView(R.id.text_pressure_condition)
+    TextView pressure;
+    @BindView(R.id.text_humidity_condition)
+    TextView humidity;
+    @BindView(R.id.text_cloudiness_condition)
+    TextView cloudiness;
+    @BindView(R.id.text_sunrise_time)
+    TextView sunrise;
+    @BindView(R.id.text_sunset_time)
+    TextView sunset;
+    @BindView(R.id.day)
+    TextView day;
+    @BindView(R.id.month)
+    TextView month;
+    @BindView(R.id.year)
+    TextView year;
+    @BindView(R.id.text_weather_condition)
+    TextView weatherCondition;
+    @BindView(R.id.ic_weather)
+    ImageView weatherImg;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.ic_place)
+    ImageView ic_map;
 
     private double lat;
     private double lng;
-
 
 
     @Override
@@ -65,36 +91,38 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        callPermissions();
+        getCurrentCoordinate();
+        Toast.makeText(this,lat + " " + lng,Toast.LENGTH_LONG).show();
 
-        getWeather();
-        getWeatherForCast();
 
     }
 
-    public static void start(Context context){
+    public static void start(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-    private void getWeather(){
+    private void getWeather() {
         RetrofitBuilder.getService()
-                .currentWeather("Bishkek","metric",API_KEY)
+                .currentWeather("Bishkek", "metric", API_KEY)
                 .enqueue(new Callback<CurrentWeather>() {
                     @Override
                     public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                        if (response.isSuccessful() && response.body() != null){
+                        if (response.isSuccessful() && response.body() != null) {
                             setWeather(response.body());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<CurrentWeather> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
-    private void getWeatherForCast(){
+
+    private void getWeatherForCast() {
         RetrofitBuilder.getService()
-                .forCastWeather("Bishkek","metric",API_KEY)
+                .forCastWeather("Bishkek", "metric", API_KEY)
                 .enqueue(new Callback<ForCastEntity>() {
                     @Override
                     public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
@@ -110,7 +138,7 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    private void setWeather(CurrentWeather weather){
+    private void setWeather(CurrentWeather weather) {
         city.setText(weather.getName());
         temp.setText(weather.getMain().getTemp().toString());
         maxTemp.setText(weather.getMain().getTempMax().toString());
@@ -130,8 +158,9 @@ public class MainActivity extends BaseActivity {
                         + weather.getWeather().get(0).getIcon()
                         + "@2x.png").into(weatherImg);
     }
-    private void rv_builder(List<CurrentWeather> list){
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
+
+    private void rv_builder(List<CurrentWeather> list) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         RV_Adapter adapter = new RV_Adapter();
         recyclerView.setAdapter(adapter);
@@ -140,36 +169,38 @@ public class MainActivity extends BaseActivity {
 
 
     public void openMap(View view) {
-        startActivityForResult(new Intent(this, MapActivity.class),100);
+        startActivityForResult(new Intent(this, MapActivity.class), 100);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 100 && data != null){
-            lat = data.getDoubleExtra("lat",0);
-            lng = data.getDoubleExtra("lng",0);
-            getWeatherForCoord(lat,lng);
-            getForeCastWeatherForCoord(lat,lng);
+        if (resultCode == RESULT_OK && requestCode == 100 && data != null) {
+            lat = data.getDoubleExtra("lat", 0);
+            lng = data.getDoubleExtra("lng", 0);
+
+            getWeatherForCoord(lat, lng);
+            getForeCastWeatherForCoord(lat, lng);
         }
     }
 
-    private void getWeatherForCoord(double lat,double lon){
-        RetrofitBuilder.getService().coordCurrentWeather(lat,lon,"metric",API_KEY)
+    private void getWeatherForCoord(double lat, double lon) {
+        RetrofitBuilder.getService().coordCurrentWeather(lat, lon, "metric", API_KEY)
                 .enqueue(new Callback<CurrentWeather>() {
-            @Override
-            public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                setWeather(response.body());
-            }
+                    @Override
+                    public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
+                        setWeather(response.body());
+                    }
 
-            @Override
-            public void onFailure(Call<CurrentWeather> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<CurrentWeather> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
-    private void getForeCastWeatherForCoord(double lat,double lon){
-        RetrofitBuilder.getService().coordForCastWeather(lat,lon,"metric",API_KEY)
+
+    private void getForeCastWeatherForCoord(double lat, double lon) {
+        RetrofitBuilder.getService().coordForCastWeather(lat, lon, "metric", API_KEY)
                 .enqueue(new Callback<ForCastEntity>() {
                     @Override
                     public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
@@ -178,7 +209,52 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(Call<ForCastEntity> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void getCurrentCoordinate() {
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                PermissionChecker.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PermissionChecker.PERMISSION_GRANTED) {
+            FusedLocationProviderClient fusedLocationProvider = new FusedLocationProviderClient(this);
+            LocationRequest locationRequest = new LocationRequest();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//            locationRequest.setFastestInterval(2000);
+//            locationRequest.setInterval(4000);
+            fusedLocationProvider.requestLocationUpdates(locationRequest, new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+
+                    super.onLocationResult(locationResult);
+                    Log.e("------", "lat: " + locationResult.getLastLocation().getLatitude() +
+                            " lon: " + locationResult.getLastLocation().getLongitude() + "  ");
+                    double latitude = locationResult.getLastLocation().getLatitude();
+                    double longitude = locationResult.getLastLocation().getLongitude();
+                    getWeatherForCoord(latitude,longitude);
+                    getForeCastWeatherForCoord(latitude,longitude);
+                }
+            }, getMainLooper());
+
+        }
+    }
+    public void callPermissions(){
+        Permissions.check(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION}, "Нужен доступ к местоположению",
+                new Permissions.Options().setSettingsDialogTitle("Внимание!!!").setRationaleDialogTitle("Доступ к местоположению"),
+                new PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        getCurrentCoordinate();
+                    }
+
+                    @Override
+                    public void onDenied(Context context, ArrayList<String> deniedPermissions) {
+                        super.onDenied(context, deniedPermissions);
+                        callPermissions();
                     }
                 });
     }

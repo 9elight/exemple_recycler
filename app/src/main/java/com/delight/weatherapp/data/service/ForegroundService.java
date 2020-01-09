@@ -47,6 +47,7 @@ public class ForegroundService extends Service {
 
     }
     public void requestLocationUpdates() {
+
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION)==
                 PermissionChecker.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION)==
@@ -65,11 +66,18 @@ public class ForegroundService extends Service {
                             "lon: " + locationResult.getLastLocation().getLongitude() + "  " +locations.size());
                             locations.add(locationResult.getLastLocation());
 
+
+
                 }
             }, getMainLooper());
         }
 
     }
+
+
+
+
+
 
 
 }
