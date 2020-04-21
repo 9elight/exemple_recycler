@@ -163,6 +163,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_wind_condition"
         app:layout_constraintLeft_toLeftOf="@id/text_wind_condition"
         android:layout_marginTop="@dimen/vertical_small_margin"/>
+
     <TextView
         android:id="@+id/Cloudiness"
         style="@style/textView_normalStyle"
@@ -226,5 +227,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text_sunset_time"
         app:layout_constraintLeft_toLeftOf="@id/text_sunset_time"
         android:layout_marginTop="@dimen/vertical_small_margin"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

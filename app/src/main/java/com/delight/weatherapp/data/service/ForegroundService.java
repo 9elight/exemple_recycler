@@ -11,23 +11,21 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
-
+import com.delight.weatherapp.MyApp;
 import com.delight.weatherapp.data.NotificationHelper;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.nabinbhandari.android.permissions.PermissionHandler;
-import com.nabinbhandari.android.permissions.Permissions;
-
+import com.mapbox.geojson.Point;
+import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ForegroundService extends Service {
     private FusedLocationProviderClient fusedLocationProvider;
     private LocationRequest locationRequest;
-    private ArrayList<Location> locations = new ArrayList<>();
+    private ArrayList<Point> locations = new ArrayList<>();
+    private LocationCallback locationCallback;
 
     @Nullable
     @Override
@@ -52,20 +50,22 @@ public class ForegroundService extends Service {
                 PermissionChecker.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION)==
                         PermissionChecker.PERMISSION_GRANTED ){
-            fusedLocationProvider = new FusedLocationProviderClient(this);
+//            fusedLocationProvider = new FusedLocationProviderClient(this);
             locationRequest = new LocationRequest();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             locationRequest.setFastestInterval(2000);
             locationRequest.setInterval(4000);
-            fusedLocationProvider.requestLocationUpdates(locationRequest, new LocationCallback() {
+            MyApp.fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
 
                     super.onLocationResult(locationResult);
                     Log.e("------", "lat: " + locationResult.getLastLocation().getLatitude()+
                             "lon: " + locationResult.getLastLocation().getLongitude() + "  " +locations.size());
-                            locations.add(locationResult.getLastLocation());
-
+                            Location location = locationResult.getLastLocation();
+                            locations.add(Point.fromLngLat(location.getLongitude(),location.getLatitude()
+                            ));
+                    EventBus.getDefault().post(locations);
 
 
                 }
@@ -74,10 +74,9 @@ public class ForegroundService extends Service {
 
     }
 
-
-
-
-
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        fusedLocationProvider.removeLocationUpdates(locationCallback);
+    }
 }

@@ -25,6 +25,9 @@ public class PreferenceHelper {
     public static boolean getIsFirsLaunch(){
         return preferences.getBoolean(IS_FIRST_LAUNCH, false);
     }
+    public static void clearPreference(){
+        preferences.edit().clear().apply();
+    }
 
 
 }

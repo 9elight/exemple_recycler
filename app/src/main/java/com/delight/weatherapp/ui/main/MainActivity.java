@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.delight.weatherapp.R;
 import com.delight.weatherapp.base.BaseActivity;
-import com.delight.weatherapp.data.RetrofitBuilder;
 import com.delight.weatherapp.data.entity.CurrentWeather;
-import com.delight.weatherapp.data.entity.ForCastEntity;
 import com.delight.weatherapp.ui.map.MapActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -29,21 +27,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.delight.weatherapp.BuildConfig.API_KEY;
 import static com.delight.weatherapp.utils.DateParser.parseDateToTime;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements
+MainContract.View{
     @BindView(R.id.text_place)
     TextView city;
     @BindView(R.id.temp)
@@ -79,6 +72,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ic_place)
     ImageView ic_map;
 
+    private MainContract.Presenter mPresenter;
     private double lat;
     private double lng;
 
@@ -91,6 +85,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPresenter = new MainPresenter();
+        mPresenter.bind(this);
         callPermissions();
         getCurrentCoordinate();
         Toast.makeText(this,lat + " " + lng,Toast.LENGTH_LONG).show();
@@ -102,7 +98,8 @@ public class MainActivity extends BaseActivity {
         context.startActivity(new Intent(context, MainActivity.class));
     }
 
-    private void setWeather(CurrentWeather weather) {
+
+    public void setWeather(CurrentWeather weather) {
         city.setText(weather.getName());
         temp.setText(weather.getMain().getTemp().toString());
         maxTemp.setText(weather.getMain().getTempMax().toString());
@@ -123,7 +120,12 @@ public class MainActivity extends BaseActivity {
                         + "@2x.png").into(weatherImg);
     }
 
-    private void rv_builder(List<CurrentWeather> list) {
+    @Override
+    public void toast(String msg) {
+        toast(msg);
+    }
+
+    public void rv_builder(List<CurrentWeather> list) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         RV_Adapter adapter = new RV_Adapter();
@@ -142,78 +144,10 @@ public class MainActivity extends BaseActivity {
         if (resultCode == RESULT_OK && requestCode == 100 && data != null) {
             lat = data.getDoubleExtra("lat", 0);
             lng = data.getDoubleExtra("lng", 0);
-
-            getWeatherForCoord(lat, lng);
-            getForeCastWeatherForCoord(lat, lng);
+            mPresenter.getWeatherForCoord(lat, lng);
+            mPresenter.getForeCastWeatherForCoord(lat, lng);
         }
     }
-
-//    private void getWeather() {
-//        RetrofitBuilder.getService()
-//                .currentWeather("Bishkek", "metric", API_KEY)
-//                .enqueue(new Callback<CurrentWeather>() {
-//                    @Override
-//                    public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            setWeather(response.body());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<CurrentWeather> call, Throwable t) {
-//                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//    }
-
-//    private void getWeatherForCast() {
-//        RetrofitBuilder.getService()
-//                .forCastWeather("Bishkek", "metric", API_KEY)
-//                .enqueue(new Callback<ForCastEntity>() {
-//                    @Override
-//                    public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            rv_builder(response.body().getList());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ForCastEntity> call, Throwable t) {
-//
-//                    }
-//                });
-//    }
-
-    private void getWeatherForCoord(double lat, double lon) {
-        RetrofitBuilder.getService().coordCurrentWeather(lat, lon, "metric", API_KEY)
-                .enqueue(new Callback<CurrentWeather>() {
-                    @Override
-                    public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                        setWeather(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<CurrentWeather> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-    private void getForeCastWeatherForCoord(double lat, double lon) {
-        RetrofitBuilder.getService().coordForCastWeather(lat, lon, "metric", API_KEY)
-                .enqueue(new Callback<ForCastEntity>() {
-                    @Override
-                    public void onResponse(Call<ForCastEntity> call, Response<ForCastEntity> response) {
-                        rv_builder(response.body().getList());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ForCastEntity> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
     private void getCurrentCoordinate() {
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) ==
@@ -234,8 +168,8 @@ public class MainActivity extends BaseActivity {
                             " lon: " + locationResult.getLastLocation().getLongitude() + "  ");
                     double latitude = locationResult.getLastLocation().getLatitude();
                     double longitude = locationResult.getLastLocation().getLongitude();
-                    getWeatherForCoord(latitude,longitude);
-                    getForeCastWeatherForCoord(latitude,longitude);
+                    mPresenter.getWeatherForCoord(latitude,longitude);
+                    mPresenter.getForeCastWeatherForCoord(latitude,longitude);
                 }
             }, getMainLooper());
 
@@ -257,5 +191,11 @@ public class MainActivity extends BaseActivity {
                         callPermissions();
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unbind();
     }
 }
